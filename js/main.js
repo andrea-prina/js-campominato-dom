@@ -12,6 +12,7 @@ playButton.addEventListener("click", function(){
 })
 
 
+
 // Create a grid (according to the difficulty)
 function createGrid(){
 
@@ -64,3 +65,23 @@ function onClicklogInnerHtml (htmlElement){
         }
     })
 }
+
+
+function generateBomb (cell_range){
+    // Easy 1-100
+    // Medium 1-81
+    // Hard 1-49
+    const bombFilledCells = [];
+
+    for (let i = 0; i < 16; i++){
+        let bombLocation = Math.floor(Math.random() * (cell_range + 1 - 1) + 1);
+        while (bombFilledCells.includes(bombLocation)){
+            bombLocation = Math.floor(Math.random() * (cell_range + 1 - 1) + 1);
+        }
+        bombFilledCells.push(bombLocation);    
+    }
+
+    return bombFilledCells;
+}
+
+console.log(generateBomb(100));
