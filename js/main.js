@@ -1,9 +1,17 @@
 const gridContainer = document.querySelector(".ms_grid-container");
 const playButton = document.getElementById("play-button");
 const difficultySelect = document.getElementById("difficulty-selection");
+let playerScore = 0;
 
 
-// PRESS PLAY
+
+
+playButton.addEventListener("click", function(){
+    startGame();
+})
+
+
+
 
 function startGame(){
 
@@ -20,35 +28,14 @@ function startGame(){
     //  3. Aggiungo verifica al click della cella se il valore è bomba o meno
     for (let i = 0; i < gridContainer.children.length; i++){
         gridContainer.children[i].addEventListener("click", function(){
-            checkBomb(gridContainer.children[i], bombsArray)
-            console.log(gridContainer.children[i].classList);
+            checkBomb(gridContainer.children[i], bombsArray);
         });
     }
 }
 
 
-function checkBomb(htmlElement, bombsLocation){
-    // Recupero il valore dell'elemento cliccato
-    const cellValue = parseInt(htmlElement.innerHTML);
-    // Controllo se è presente nel'elenco delle bombe e aggiungo la classe di conseguenza
-    if (bombsLocation.includes(cellValue)){
-        htmlElement.classList.add("ms_bomb-element");
-    } else {
-        htmlElement.classList.add("ms_safe-element");
-    }
-}
 
 
-
-
-
-playButton.addEventListener("click", function(){
-    startGame();
-    })
-
-
-
-// Create a grid (according to the difficulty)
 function createGrid(difficulty){
 
     const temporaryDiv = document.createElement("div");
@@ -86,10 +73,12 @@ function createGrid(difficulty){
 }
 
 
+
+
 function generateBomb (difficulty){
-    // Easy 1-100
-    // Medium 1-81
-    // Hard 1-49
+
+    const BOMB_NUMBERS = 16;
+
     let cellRange = 0;
 
     switch(difficulty){
@@ -110,7 +99,7 @@ function generateBomb (difficulty){
 
     const bombFilledCells = [];
 
-    for (let i = 0; i < 16; i++){
+    for (let i = 0; i < BOMB_NUMBERS; i++){
         let bombLocation = Math.floor(Math.random() * (cellRange + 1 - 1) + 1);
         while (bombFilledCells.includes(bombLocation)){
             bombLocation = Math.floor(Math.random() * (cellRange + 1 - 1) + 1);
@@ -120,3 +109,35 @@ function generateBomb (difficulty){
 
     return bombFilledCells;
 }
+
+
+
+
+function checkBomb(htmlElement, bombsLocation){
+    // Recupero il valore dell'elemento cliccato
+    const cellValue = parseInt(htmlElement.innerHTML);
+    // Controllo se è presente nel'elenco delle bombe e aggiungo la classe di conseguenza
+    if (bombsLocation.includes(cellValue)){
+        htmlElement.classList.add("ms_bomb-element");
+        stopGame();
+    } else {
+        htmlElement.classList.add("ms_safe-element");
+        playerScore += 1;
+    }
+}
+
+
+function stopGame(){
+    alert(`GAME OVER. Hai totalizzato ${playerScore} punti!!!`);
+}
+
+
+
+
+
+
+
+
+
+
+
