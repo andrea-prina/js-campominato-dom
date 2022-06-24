@@ -6,7 +6,7 @@ const difficultySelect = document.getElementById("difficulty-selection");
 playButton.addEventListener("click", function(){
     gridContainer.innerHTML = createGrid();
     for (let i = 0; i < gridContainer.children.length; i++){
-        onClickToggleColor(gridContainer.children[i]);
+        onClickActivateCell(gridContainer.children[i]);
         onClicklogInnerHtml(gridContainer.children[i]);
     }
 })
@@ -50,14 +50,13 @@ function createGrid(){
 }
 
 
-// On click, toggle change of cell color
-function onClickToggleColor (htmlElement){
+function onClickActivateCell (htmlElement){
     htmlElement.addEventListener("click", function(){
-        htmlElement.classList.toggle("ms_active-element");
+        htmlElement.classList.add("ms_active-element");
     });
 }
 
-// On click, if the cell is turned active, log the value in the console
+
 function onClicklogInnerHtml (htmlElement){
     htmlElement.addEventListener("click", function(){
         if(htmlElement.classList.contains("ms_active-element")){
