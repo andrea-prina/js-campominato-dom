@@ -56,8 +56,14 @@ header h1 {
     border: 0.5px solid black;
 }
 
-.ms_active-element {
-    background-color: orange;
+.ms_safe-element {
+    background-color: steelblue;
+    color: white;
+    font-weight: bolder;
+}
+
+.ms_bomb-element {
+    background-color: darkred;
     color: white;
     font-weight: bolder;
 }
