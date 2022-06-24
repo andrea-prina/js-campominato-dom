@@ -1,6 +1,7 @@
 let playerScore = 0;
 let maxPlayerScore = 0;
 let bombsArray = [];
+let gameOver = false;
 const BOMBS_NUMBER = 16;
 
 const playButton = document.getElementById("play-button");
@@ -19,6 +20,7 @@ playButton.addEventListener("click", function(){
 function startGame(){
 
     playButton.innerHTML = "Reset";
+    gameOver = false;
     playerScore = 0;
 
     const cellsNumber = setCellsNumberBasedOnDifficulty();
@@ -117,7 +119,7 @@ function checkBombOrSafe(htmlElement, bombsLocation, maxScore){
 
             htmlElement.classList.add("ms_safe-element");
 
-            playerScore = increaseScore(playerScore);
+            playerScore = increaseScore(playerScore, gameOver);
             if(playerScore === maxScore){
                 stopGame();
         }
@@ -129,26 +131,38 @@ function checkBombOrSafe(htmlElement, bombsLocation, maxScore){
 
 
 
-function increaseScore(pScore){
-    pScore += 1;
-    return pScore;
+function increaseScore(pScore, gameStatus){
+    if (gameStatus === false){
+        pScore += 1;
+        return pScore;
+    }
 }
-
 
 
 
 function stopGame(){
+
+    const gridDisabler = document.createElement("div");
+    gridDisabler.classList.add("grid-disabler");
+
     const gameEndBanner = document.createElement("div");
     gameEndBanner.classList.add("endgame-alert");
     if (playerScore === maxPlayerScore){
+        gameOver = true;
         gameEndBanner.innerHTML = `<h1>CONGRATULAZIONI!!!</h1><h3>Hai completato la partita col massimo dei punti (${playerScore})</h3><h6>Premi <strong>Play</strong> per rigiocare</h6>`;
     } else {
+        gameOver = true;
         showAllBombs(bombsArray);
         gameEndBanner.innerHTML = `<h1>PARTITA TERMINATA</h1><h3>Hai totalizzato ${playerScore} pt.</h3><h6>Premi <strong>Play</strong> per rigiocare</h6>`;
     }
+
+    gridContainer.append(gridDisabler);
     gridContainer.append(gameEndBanner);
     playButton.innerHTML = "Play";
 }
+
+
+
 
 function showAllBombs(bombsPositionList){
     for (let i = 0; i < gridContainer.children.length; i++){
