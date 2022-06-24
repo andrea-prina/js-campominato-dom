@@ -2,7 +2,7 @@ const gridContainer = document.querySelector(".ms_grid-container");
 const playButton = document.getElementById("play-button");
 
 let playerScore = 0;
-const BOMB_NUMBERS = 16;
+const BOMBS_NUMBER = 1;
 
 
 
@@ -17,8 +17,11 @@ playButton.addEventListener("click", function(){
 
 function startGame(){
 
+    playerScore = 0;
     //  0. Recupera la difficoltà della partita e
     const cellsNumber = setCellsNumberBasedOnDifficulty();
+    const maxPlayerScore = cellsNumber - BOMBS_NUMBER;
+    console.log(maxPlayerScore);
 
     //  1. Genera la griglia ed assegna un valore ad ogni cella
     gridContainer.innerHTML = createGrid(cellsNumber);
@@ -30,9 +33,11 @@ function startGame(){
     //  3. Aggiungo verifica al click della cella se il valore è bomba o meno
     for (let i = 0; i < gridContainer.children.length; i++){
         gridContainer.children[i].addEventListener("click", function(){
-            checkBomb(gridContainer.children[i], bombsArray);
+            checkBombOrSafe(gridContainer.children[i], bombsArray, maxPlayerScore);
         });
     }
+
+
 }
 
 
@@ -85,7 +90,7 @@ function generateBomb (cellRange){
 
     const bombFilledCells = [];
 
-    for (let i = 0; i < BOMB_NUMBERS; i++){
+    for (let i = 0; i < BOMBS_NUMBER; i++){
         let bombLocation = Math.floor(Math.random() * (cellRange + 1 - 1) + 1);
         while (bombFilledCells.includes(bombLocation)){
             bombLocation = Math.floor(Math.random() * (cellRange + 1 - 1) + 1);
@@ -99,7 +104,7 @@ function generateBomb (cellRange){
 
 
 
-function checkBomb(htmlElement, bombsLocation){
+function checkBombOrSafe(htmlElement, bombsLocation, maxScore){
     // Recupero il valore dell'elemento cliccato
     const cellValue = parseInt(htmlElement.innerHTML);
     // Controllo se è presente nel'elenco delle bombe e aggiungo la classe di conseguenza
@@ -109,12 +114,16 @@ function checkBomb(htmlElement, bombsLocation){
     } else {
         htmlElement.classList.add("ms_safe-element");
         playerScore += 1;
+        console.log(playerScore);
+        if(playerScore === maxScore){
+            stopGame();
+        }
     }
 }
 
 
 function stopGame(){
-    alert(`GAME OVER. Hai totalizzato ${playerScore} punti!!!`);
+    alert(`PARTITA TERMINATA. Hai totalizzato ${playerScore} punti!!!`);
 }
 
 
