@@ -1,7 +1,9 @@
 const gridContainer = document.querySelector(".ms_grid-container");
 const playButton = document.getElementById("play-button");
-const difficultySelect = document.getElementById("difficulty-selection");
+
 let playerScore = 0;
+const BOMB_NUMBERS = 16;
+
 
 
 
@@ -15,14 +17,14 @@ playButton.addEventListener("click", function(){
 
 function startGame(){
 
-    //  0. Recupera la difficoltà della partita
-    const gameDifficulty = difficultySelect.value;
+    //  0. Recupera la difficoltà della partita e
+    const cellsNumber = setCellsNumberBasedOnDifficulty();
 
     //  1. Genera la griglia ed assegna un valore ad ogni cella
-    gridContainer.innerHTML = createGrid(gameDifficulty);
+    gridContainer.innerHTML = createGrid(cellsNumber);
 
     //  2. Genera le bombe
-    const bombsArray = generateBomb(gameDifficulty);
+    const bombsArray = generateBomb(cellsNumber);
     console.log(bombsArray);
 
     //  3. Aggiungo verifica al click della cella se il valore è bomba o meno
@@ -34,37 +36,42 @@ function startGame(){
 }
 
 
+function setCellsNumberBasedOnDifficulty (){
 
+    const difficultySelect = document.getElementById("difficulty-selection").value;
 
-function createGrid(difficulty){
+    let gridCells = 0;
 
-    const temporaryDiv = document.createElement("div");
-
-    let cellsNumber;
-    let gridType;
-
-    switch(difficulty){
+    switch(difficultySelect){
         case "Easy":
         default:
             // If the user modifies the HTML to input an unacceptable value, set the difficulty to easy
-            cellsNumber = 100;
-            gridType = "easy-grid";
+            gridCells = 100;
             break;
 
         case "Medium":
-            cellsNumber = 81;
-            gridType = "medium-grid";
+            gridCells = 81;
             break;
 
         case "Hard":
-            cellsNumber = 49;
-            gridType = "hard-grid";
+            gridCells = 49;
             break;
     }
+
+    return gridCells;
+}
+
+
+
+function createGrid(gridCells){
+
+    const temporaryDiv = document.createElement("div");
     
-    for(let i = 1; i<= cellsNumber; i++){
+    for(let i = 1; i<= gridCells; i++){
         const gridElement = document.createElement("div");
-        gridElement.classList.add("ms_grid-element", gridType);
+        gridElement.classList.add("ms_grid-element");
+        gridElement.style.width = `calc(100% / ${Math.sqrt(gridCells)})`;
+        gridElement.style.height = `calc(100% / ${Math.sqrt(gridCells)})`;
         gridElement.innerHTML = i;
         temporaryDiv.append(gridElement);
     }
@@ -74,28 +81,7 @@ function createGrid(difficulty){
 
 
 
-
-function generateBomb (difficulty){
-
-    const BOMB_NUMBERS = 16;
-
-    let cellRange = 0;
-
-    switch(difficulty){
-        case "Easy":
-        default:
-            // If the user modifies the HTML to input an unacceptable value, set the difficulty to easy
-            cellRange = 100;
-            break;
-
-        case "Medium":
-            cellRange = 81;
-            break;
-
-        case "Hard":
-            cellRange = 49;
-            break;
-    }
+function generateBomb (cellRange){
 
     const bombFilledCells = [];
 

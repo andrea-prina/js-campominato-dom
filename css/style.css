@@ -37,21 +37,6 @@ header h1 {
     font-size: 3vh;
 }
 
-.easy-grid {
-    width: calc(100% / 10);
-    height: calc(100% / 10);
-}
-
-.medium-grid {
-    width: calc(100% / 9);
-    height: calc(100% / 9);
-}
-
-.hard-grid {
-    width: calc(100% / 7);
-    height: calc(100% / 7);
-}
-
 .ms_grid-container, .ms_grid-element {
     border: 0.5px solid black;
 }
