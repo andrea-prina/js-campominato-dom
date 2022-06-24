@@ -108,6 +108,7 @@ function checkBombOrSafe(htmlElement, bombsLocation, maxScore){
 
     if (bombsLocation.includes(cellValue)){
         htmlElement.classList.add("ms_bomb-element");
+        htmlElement.innerHTML = `<i class="fa-solid fa-land-mine-on"></i>`;
         stopGame();
     } else {
 
