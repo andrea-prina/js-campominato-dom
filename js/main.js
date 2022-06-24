@@ -1,5 +1,6 @@
 let playerScore = 0;
 let maxPlayerScore = 0;
+let bombsArray = [];
 const BOMBS_NUMBER = 16;
 
 const playButton = document.getElementById("play-button");
@@ -25,7 +26,7 @@ function startGame(){
 
     gridContainer.innerHTML = createGrid(cellsNumber);
 
-    const bombsArray = generateBomb(cellsNumber);
+    bombsArray = generateBomb(cellsNumber);
 
     for (let i = 0; i < gridContainer.children.length; i++){
         gridContainer.children[i].addEventListener("click", function(){
@@ -140,16 +141,23 @@ function stopGame(){
     const gameEndBanner = document.createElement("div");
     gameEndBanner.classList.add("endgame-alert");
     if (playerScore === maxPlayerScore){
-        gameEndBanner.innerHTML = `<h1>CONGRATULAZIONI!!!</h1><h3>Hai completato la partita col massimo dei punti (${playerScore})</h3><h6>Premi <strong>play</strong> per rigiocare</h6>`;
+        gameEndBanner.innerHTML = `<h1>CONGRATULAZIONI!!!</h1><h3>Hai completato la partita col massimo dei punti (${playerScore})</h3><h6>Premi <strong>Play</strong> per rigiocare</h6>`;
     } else {
-        gameEndBanner.innerHTML = `<h1>PARTITA TERMINATA</h1><h3>Hai totalizzato ${playerScore} pt.</h3><h6>Premi <strong>play</strong> per rigiocare</h6>`;
+        showAllBombs(bombsArray);
+        gameEndBanner.innerHTML = `<h1>PARTITA TERMINATA</h1><h3>Hai totalizzato ${playerScore} pt.</h3><h6>Premi <strong>Play</strong> per rigiocare</h6>`;
     }
     gridContainer.append(gameEndBanner);
     playButton.innerHTML = "Play";
 }
 
-
-
+function showAllBombs(bombsPositionList){
+    for (let i = 0; i < gridContainer.children.length; i++){
+        if (bombsPositionList.includes(parseInt(gridContainer.children[i].innerHTML))){
+            gridContainer.children[i].innerHTML = `<i class="fa-solid fa-land-mine-on"></i>`;
+            gridContainer.children[i].classList.add("ms_bomb-element"); 
+        }
+    }
+}
 
 
 
