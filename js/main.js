@@ -108,19 +108,31 @@ function checkBombOrSafe(htmlElement, bombsLocation, maxScore){
     // Recupero il valore dell'elemento cliccato
     const cellValue = parseInt(htmlElement.innerHTML);
     // Controllo se è presente nel'elenco delle bombe e aggiungo la classe di conseguenza
+
     if (bombsLocation.includes(cellValue)){
         htmlElement.classList.add("ms_bomb-element");
         stopGame();
     } else {
-        htmlElement.classList.add("ms_safe-element");
-        playerScore += 1;
-        console.log(playerScore);
-        if(playerScore === maxScore){
-            stopGame();
+
+        if (!htmlElement.classList.contains("ms_safe-element")){
+
+            htmlElement.classList.add("ms_safe-element");
+
+            playerScore = increaseScore(playerScore);
+            console.log(playerScore);
+            if(playerScore === maxScore){
+                stopGame();
+        }
+
         }
     }
 }
 
+
+function increaseScore(pScore){
+    pScore += 1;
+    return pScore
+}
 
 function stopGame(){
     alert(`PARTITA TERMINATA. Hai totalizzato ${playerScore} punti!!!`);
