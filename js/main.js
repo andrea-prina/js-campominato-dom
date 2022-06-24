@@ -1,9 +1,9 @@
-const gridContainer = document.querySelector(".ms_grid-container");
-const playButton = document.getElementById("play-button");
-
 let playerScore = 0;
-const BOMBS_NUMBER = 1;
+let maxPlayerScore = 0;
+const BOMBS_NUMBER = 16;
 
+const playButton = document.getElementById("play-button");
+const gridContainer = document.querySelector(".ms_grid-container");
 
 
 
@@ -17,34 +17,29 @@ playButton.addEventListener("click", function(){
 
 function startGame(){
 
+    playButton.innerHTML = "Reset";
     playerScore = 0;
-    //  0. Recupera la difficoltà della partita e
-    const cellsNumber = setCellsNumberBasedOnDifficulty();
-    const maxPlayerScore = cellsNumber - BOMBS_NUMBER;
-    console.log(maxPlayerScore);
 
-    //  1. Genera la griglia ed assegna un valore ad ogni cella
+    const cellsNumber = setCellsNumberBasedOnDifficulty();
+    maxPlayerScore = cellsNumber - BOMBS_NUMBER;
+
     gridContainer.innerHTML = createGrid(cellsNumber);
 
-    //  2. Genera le bombe
     const bombsArray = generateBomb(cellsNumber);
-    console.log(bombsArray);
 
-    //  3. Aggiungo verifica al click della cella se il valore è bomba o meno
     for (let i = 0; i < gridContainer.children.length; i++){
         gridContainer.children[i].addEventListener("click", function(){
             checkBombOrSafe(gridContainer.children[i], bombsArray, maxPlayerScore);
         });
     }
-
-
 }
+
+
 
 
 function setCellsNumberBasedOnDifficulty (){
 
     const difficultySelect = document.getElementById("difficulty-selection").value;
-
     let gridCells = 0;
 
     switch(difficultySelect){
@@ -68,6 +63,7 @@ function setCellsNumberBasedOnDifficulty (){
 
 
 
+
 function createGrid(gridCells){
 
     const temporaryDiv = document.createElement("div");
@@ -83,6 +79,7 @@ function createGrid(gridCells){
 
     return temporaryDiv.innerHTML;
 }
+
 
 
 
@@ -105,21 +102,20 @@ function generateBomb (cellRange){
 
 
 function checkBombOrSafe(htmlElement, bombsLocation, maxScore){
-    // Recupero il valore dell'elemento cliccato
+
     const cellValue = parseInt(htmlElement.innerHTML);
-    // Controllo se è presente nel'elenco delle bombe e aggiungo la classe di conseguenza
+
 
     if (bombsLocation.includes(cellValue)){
         htmlElement.classList.add("ms_bomb-element");
         stopGame();
     } else {
 
-        if (!htmlElement.classList.contains("ms_safe-element")){
+        if (htmlElement.classList.contains("ms_safe-element") === false){
 
             htmlElement.classList.add("ms_safe-element");
 
             playerScore = increaseScore(playerScore);
-            console.log(playerScore);
             if(playerScore === maxScore){
                 stopGame();
         }
@@ -129,13 +125,26 @@ function checkBombOrSafe(htmlElement, bombsLocation, maxScore){
 }
 
 
+
+
 function increaseScore(pScore){
     pScore += 1;
-    return pScore
+    return pScore;
 }
 
+
+
+
 function stopGame(){
-    alert(`PARTITA TERMINATA. Hai totalizzato ${playerScore} punti!!!`);
+    const gameEndBanner = document.createElement("div");
+    gameEndBanner.classList.add("endgame-alert");
+    if (playerScore === maxPlayerScore){
+        gameEndBanner.innerHTML = `<h1>CONGRATULAZIONI!!!</h1><h3>Hai completato la partita col massimo dei punti (${playerScore})</h3><h6>Premi <strong>play</strong> per rigiocare</h6>`;
+    } else {
+        gameEndBanner.innerHTML = `<h1>PARTITA TERMINATA</h1><h3>Hai totalizzato ${playerScore} pt.</h3><h6>Premi <strong>play</strong> per rigiocare</h6>`;
+    }
+    gridContainer.append(gameEndBanner);
+    playButton.innerHTML = "Play";
 }
 
 
