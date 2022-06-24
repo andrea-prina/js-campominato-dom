@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Fascinate&display=swap');
+
+/* HEADER */
+header, footer {
+    background-color: darkslateblue;
+    color: white;
+    height: 5vh;
+    min-height: 50px;
+}
+
+header h1 {
+    font-family: 'Fascinate', cursive;
+}
+
+.logo {
+    font-size: 1.8rem;
+}
+
+.hard-sized {
+    height: 35px;
+    width: 100px;
+}
+
+/* MAIN */
+.ms_grid-container {
+    /* TODO Sistemare dimensioni (anche header e footer */
+    height: calc(90vh - 100px);
+    width: calc(90vh - 100px);
+    margin: 50px auto;
+}
+
+.ms_grid-element {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 3vh;
+}
+
+.easy-grid {
+    width: calc(100% / 10);
+    height: calc(100% / 10);
+}
+
+.medium-grid {
+    width: calc(100% / 9);
+    height: calc(100% / 9);
+}
+
+.hard-grid {
+    width: calc(100% / 7);
+    height: calc(100% / 7);
+}
+
+.ms_grid-container, .ms_grid-element {
+    border: 0.5px solid black;
+}
+
+.ms_active-element {
+    background-color: orange;
+    color: white;
+    font-weight: bolder;
+}
