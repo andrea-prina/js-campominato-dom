@@ -84,4 +84,16 @@ function generateBomb (cell_range){
     return bombFilledCells;
 }
 
-console.log(generateBomb(100));
+const bombsArray = generateBomb(20);
+console.log(bombsArray);
+
+
+function checkBomb (position, bombLocationList){
+    let bombExplodes = false;
+
+    if (bombLocationList.includes(position)){
+        bombExplodes = true;
+    }
+
+    return bombExplodes
+}
